@@ -1,0 +1,9 @@
+SignIn-T:20/05/2025-22:18
+#Day 1
+- repo init
+- client & backend setup
+- integrate both sides
+- test 1: frontend working
+- test 2: backend working
+- test 3: check integration
+SignOut-T:20/05/2025-

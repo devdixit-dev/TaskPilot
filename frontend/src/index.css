@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  font-family: 'Outfit', sans-serif, 'Segoe UI', Tahoma, Geneva, Verdana;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}

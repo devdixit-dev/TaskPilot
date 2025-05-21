@@ -7,7 +7,7 @@ const AuthPage = () => {
 
   useEffect(() => {
     const notify = () => toast('Hello, there !');
-    // notify();
+    notify();
     console.log("Active tab changed to:", active);
   }, [active]);
 

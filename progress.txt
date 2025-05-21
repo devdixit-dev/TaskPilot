@@ -1,5 +1,5 @@
-T:20/05/2025-22:18
 #Day 1
+T:20/05/2025-22:18
 - repo init ('first commit')
 - client & backend setup
 - integrate both sides
@@ -7,9 +7,14 @@ T:20/05/2025-22:18
 - test 2: backend working
 - test 3: check integration
 
-T:21/05/2025-8:56
 #Day 2 - start frontend first
+T:21/05/2025-8:56
 - setup routes
 - Auth Page created
 - UI updation with transition
 - update progress.txt
+
+T:21/05/2025-18:50
+- UI updation ins with shadcn.ui
+- product design
+- commit with add option for new account or already have an account

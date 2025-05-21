@@ -6,3 +6,10 @@ T:20/05/2025-22:18
 - test 1: frontend working
 - test 2: backend working
 - test 3: check integration
+
+T:21/05/2025-8:56
+#Day 2 - start frontend first
+- setup routes
+- Auth Page created
+- UI updation with transition
+- update progress.txt

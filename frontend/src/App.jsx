@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
-import AuthPage from './pages/AuthPage'
+import AdminAuth from './pages/AdminAuth'
 
 const App = () => {
 
   return (
     <Routes>
-      <Route path='/auth' element={<AuthPage />} />
+      <Route path='/admin' element={<AdminAuth />} />
     </Routes>
   )
 }

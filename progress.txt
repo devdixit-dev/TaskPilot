@@ -18,3 +18,7 @@ T:21/05/2025-18:50
 - UI updation ins with shadcn.ui
 - product design
 - commit with add option for new account or already have an account
+
+T:21/05/2025-21:48
+- signup functionality on frontend checked ✅
+- login functionality on frontend checked ✅

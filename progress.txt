@@ -15,10 +15,15 @@ T:21/05/2025-8:56
 - update progress.txt
 
 T:21/05/2025-18:50
-- UI updation ins with shadcn.ui
+- UI updation inspired with shadcn.ui
 - product design
 - commit with add option for new account or already have an account
 
 T:21/05/2025-21:48
 - signup functionality on frontend checked ✅
 - login functionality on frontend checked ✅
+- made forgot password functionality
+- add loading bar
+- customize loading bar for email verification and otp verification
+- forgot password on frontend checked ✅
+- test completed with all functionality ✅

@@ -1,11 +1,13 @@
 import { Routes, Route } from 'react-router-dom'
-import AdminAuth from './pages/AdminAuth'
+import AdminAuth from './pages/Admin/AdminAuth'
+import ForgotPassword from './pages/Admin/ForgotPassword'
 
 const App = () => {
 
   return (
     <Routes>
-      <Route path='/admin' element={<AdminAuth />} />
+      <Route path='/' element={<AdminAuth />} />
+      <Route path='/forgot-password' element={<ForgotPassword />} />
     </Routes>
   )
 }

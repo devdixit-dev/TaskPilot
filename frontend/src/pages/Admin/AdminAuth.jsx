@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AdminAuth = () => {
+  const navigate = useNavigate();
+
   const [active, setActive] = useState('signup');
   const [users, setUsers] = useState([]);
 
@@ -35,9 +38,19 @@ const AdminAuth = () => {
         return toast.error('all fields are required')
       }
 
-      toast.success(`${email} with ${password} logged in`)
-      setEmail('')
-      setPassword('')
+      const toastId = toast.loading('Verifying account...');
+      setTimeout(() => {
+        toast.update(toastId, {
+          render: 'Logged in successfully',
+          type: 'success',
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+        setEmail('');
+        setPassword('');
+        navigate('/admin-dashboard')
+      }, 3000);
     }
   }
 

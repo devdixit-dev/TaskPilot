@@ -27,3 +27,8 @@ T:21/05/2025-21:48
 - customize loading bar for email verification and otp verification
 - forgot password on frontend checked ✅
 - test completed with all functionality ✅
+
+#Day 3
+T:22/05/2025-8:35
+- redirecting logged in admin to admin-dashboard
+- 

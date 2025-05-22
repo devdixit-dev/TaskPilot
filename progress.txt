@@ -31,4 +31,9 @@ T:21/05/2025-21:48
 #Day 3
 T:22/05/2025-8:35
 - redirecting logged in admin to admin-dashboard
-- 
+
+T:22/05/2025-20:25
+- add sidebar option in admin dashboard
+- add Admin options and Task options on dashboard
+- add setting and logout button in navbar
+- update UI

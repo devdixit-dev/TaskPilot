@@ -104,7 +104,7 @@ const ForgotPassword = () => {
                 type="submit"
                 className="py-2 px-6 rounded-md bg-white text-black cursor-pointer transition-all duration-300 hover:outline hover:opacity-70"
               >
-                {emailSent ? 'Submit OTP' : 'Send Verification'}
+                {emailSent ? 'Submit OTP' : 'Send verification mail'}
               </button>
             </div>
 

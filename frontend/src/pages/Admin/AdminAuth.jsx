@@ -26,12 +26,22 @@ const AdminAuth = () => {
         password
       }
 
-      setUsers([...users, newUser]);
-      toast.success(`${name} - Sign up successfull`)
-      setName('')
-      setOrgName('')
-      setEmail('')
-      setPassword('')
+      const toastId = toast.loading('Registering user...');
+      setTimeout(() => {
+        toast.update(toastId, {
+          render: 'Sign up successfull',
+          type: 'success',
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+        setUsers([...users, newUser]);
+        console.log(users);
+        setName('')
+        setOrgName('')
+        setEmail('')
+        setPassword('')
+      }, 3000);
     }
     else {
       if (!email || !password) {

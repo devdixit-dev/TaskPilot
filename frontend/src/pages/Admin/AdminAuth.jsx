@@ -59,7 +59,7 @@ const AdminAuth = () => {
         });
         setEmail('');
         setPassword('');
-        navigate('/admin-dashboard')
+        navigate('/admin/dashboard')
       }, 3000);
     }
   }

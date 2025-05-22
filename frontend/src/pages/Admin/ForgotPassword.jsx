@@ -109,8 +109,8 @@ const ForgotPassword = () => {
             </div>
 
             <div className="flex justify-center mt-4 gap-2">
-              <p>Remember Password?</p>
-              <a href="/" className="cursor-pointer text-blue-500">Login</a>
+              <p>Remember Password ?</p>
+              <a href="/admin/auth" className="cursor-pointer text-blue-500">Login</a>
             </div>
 
             <ToastContainer theme="dark" />

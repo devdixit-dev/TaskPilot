@@ -113,7 +113,11 @@ const AdminAuth = () => {
                 <input type="email" name="email" minLength={6} placeholder="Enter your organization email" className="bg-black py-2.5 px-4.5 rounded-md border-1 border-[#242424] outline-0" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className="flex flex-col gap-2 mb-4">
-                <label htmlFor="password">Password</label>
+                <div className="flex justify-between">
+                  <label htmlFor="password">Password</label>
+                  {active === 'login' ? <a href="/admin/forgot-password" className="cursor-pointer text-sm text-blue-500">Forgot Password ?</a> : <></>}
+
+                </div>
                 <input type="password" name="password" minLength={6} placeholder="Enter your password" className="bg-black py-2.5 px-4.5 rounded-md border-1 border-[#242424] outline-0" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
               <div className="w-full flex justify-center border-b-1 border-[#242424] pb-6">
@@ -130,20 +134,12 @@ const AdminAuth = () => {
                     }} className="cursor-pointer text-blue-500">Login</button>
                   </div>
                   :
-                  <div>
-                    <div>
-                      <div className="flex justify-center mt-4 gap-2 text-sm">
-                        <p>Forgot Password ?</p>
-                        <a href="/forgot-password" className="cursor-pointer text-blue-500">Change password</a>
-                      </div>
-                    </div>
-                    <div className="flex justify-center mt-4 gap-2">
-                      <p>Don't have an account ?</p>
-                      <button onClick={(e) => {
-                        e.preventDefault();
-                        setActive('signup');
-                      }} className="cursor-pointer text-blue-500">Sign Up</button>
-                    </div>
+                  <div className="flex justify-center mt-4 gap-2">
+                    <p>Don't have an account ?</p>
+                    <button onClick={(e) => {
+                      e.preventDefault();
+                      setActive('signup');
+                    }} className="cursor-pointer text-blue-500">Sign Up</button>
                   </div>
               }
               <ToastContainer theme="dark" />

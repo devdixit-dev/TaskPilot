@@ -4,7 +4,7 @@ const Sidebar = () => {
 
       <div class="flex h-[52px] items-center justify-center px-2">
         <p class="w-full flex items-center justify-between rounded-md border-2 border-[#242424] px-3 py-2 text-sm shadow-sm">
-          <span class="truncate text-[16px]">Welcome, Dev Dixit</span>
+          <span class="truncate text-[16px]">Welcome, Admin</span>
         </p>
       </div>
 

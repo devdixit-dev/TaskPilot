@@ -96,10 +96,10 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="font-playfair font-bold text-2xl text-primary">TF</span>
+            <span className="font-playfair font-bold text-2xl text-primary">TP</span>
           </div>
           <h1 className="font-playfair font-bold text-3xl text-white">Welcome Back</h1>
-          <p className="text-blue-100 mt-2">Sign in to your TaskForge Pro account</p>
+          <p className="text-blue-100 mt-2">Sign in to your TaskPilot account</p>
         </div>
 
         <Card className="shadow-2xl border-0">
@@ -157,7 +157,7 @@ const Login = () => {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
-                Need an admin account?{' '}
+                Need to register account?{' '}
                 <Link to="/admin-signup" className="text-primary hover:underline font-medium">
                   Sign up here
                 </Link>

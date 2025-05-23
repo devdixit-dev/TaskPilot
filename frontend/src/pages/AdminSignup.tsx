@@ -58,7 +58,7 @@ const AdminSignup = () => {
       
       toast({
         title: "Account created successfully!",
-        description: `Welcome to TaskForge Pro, ${formData.contactPersonName}!`,
+        description: `Welcome to TaskPilot, ${formData.contactPersonName}!`,
       });
 
       navigate('/admin/dashboard');
@@ -78,15 +78,15 @@ const AdminSignup = () => {
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="font-playfair font-bold text-2xl text-primary">TF</span>
+            <span className="font-playfair font-bold text-2xl text-primary">TP</span>
           </div>
           <h1 className="font-playfair font-bold text-3xl text-white">Start Your Journey</h1>
-          <p className="text-blue-100 mt-2">Create your company's TaskForge Pro account</p>
+          <p className="text-blue-100 mt-2">Create your company's TaskPilot account</p>
         </div>
 
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center text-primary">Admin Signup</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center text-primary">Company Signup</CardTitle>
             <CardDescription className="text-center">
               Set up your company's task management system
             </CardDescription>
@@ -168,7 +168,7 @@ const AdminSignup = () => {
                 className="w-full h-11 bg-primary hover:bg-primary-light font-semibold mt-6"
                 disabled={loading}
               >
-                {loading ? 'Creating Account...' : 'Create Admin Account'}
+                {loading ? 'Creating Account...' : 'Create Account'}
               </Button>
             </form>
 

@@ -122,7 +122,7 @@ const AdminDashboard = () => {
                 >
                   <Users className="w-8 h-8 text-primary mb-2" />
                   <h3 className="font-medium text-sm">Add Employee</h3>
-                  <p className="text-xs text-muted-foreground">Create new user account</p>
+                  <p className="text-xs text-muted-foreground">Create new employee account</p>
                 </div>
                 <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors">
                   <Calendar className="w-8 h-8 text-primary mb-2" />

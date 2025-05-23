@@ -75,7 +75,7 @@ export function AppSidebar() {
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">TF</span>
           </div>
-          <span className="font-playfair font-bold text-lg text-primary">TaskForge Pro</span>
+          <span className="font-playfair font-bold text-lg text-primary">TaskPilot</span>
         </div>
       </SidebarHeader>
       

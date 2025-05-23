@@ -74,14 +74,6 @@ const Index = () => {
               >
                 Login to Your Account
               </Button>
-              <Button 
-                onClick={() => navigate('/admin-signup')}
-                variant="outline"
-                size="lg"
-                className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-3"
-              >
-                Start Free Trial
-              </Button>
             </div>
           </div>
         </div>

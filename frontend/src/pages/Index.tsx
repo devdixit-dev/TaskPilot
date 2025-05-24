@@ -74,6 +74,14 @@ const Index = () => {
               >
                 Login to Your Account
               </Button>
+              <Button 
+                onClick={() => navigate('/admin-signup')}
+                variant="outline"
+                size="lg"
+                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-3"
+              >
+                Start Free Trial
+              </Button>
             </div>
           </div>
         </div>
@@ -84,7 +92,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-playfair font-bold text-3xl text-primary mb-4">
-              Why Choose TaskPilot ?
+              Why Choose TaskPilot?
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Built for teams of all sizes, from startups to enterprises
@@ -115,7 +123,7 @@ const Index = () => {
       <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-blue-100">
-            © 2025 TaskPilot Project. All rights reserved. | Professional Task Management Solutions
+            © 2025 TaskPilot. All rights reserved. | Professional Task Management Solutions
           </p>
         </div>
       </footer>

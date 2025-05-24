@@ -4,9 +4,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Calendar, CheckSquare, Users, Plus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { CreateTaskDialog } from '@/components/CreateTaskDialog';
+import { useState } from 'react';
 
 const ManagerDashboard = () => {
   const { user } = useAuth();
+  const [isCreateTaskDialogOpen, setIsCreateTaskDialogOpen] = useState(false);
 
   const stats = [
     {
@@ -59,7 +62,10 @@ const ManagerDashboard = () => {
               Manage your team and track progress, {user?.name}
             </p>
           </div>
-          <Button className="bg-primary hover:bg-primary-light">
+          <Button 
+            className="bg-primary hover:bg-primary-light"
+            onClick={() => setIsCreateTaskDialogOpen(true)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Create Task
           </Button>
@@ -148,6 +154,11 @@ const ManagerDashboard = () => {
             </CardContent>
           </Card>
         </div>
+
+        <CreateTaskDialog 
+          isOpen={isCreateTaskDialogOpen}
+          onClose={() => setIsCreateTaskDialogOpen(false)}
+        />
       </div>
     </DashboardLayout>
   );

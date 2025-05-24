@@ -13,6 +13,7 @@ import ManagerDashboard from "./pages/ManagerDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import UserManagement from "./pages/UserManagement";
 import TaskManagement from "./pages/TaskManagement";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/tasks" element={<TaskManagement />} />
             <Route path="/manager/tasks" element={<TaskManagement />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

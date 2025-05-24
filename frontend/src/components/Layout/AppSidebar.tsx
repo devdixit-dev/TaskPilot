@@ -14,13 +14,21 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Users, Calendar, User, LogOut } from "lucide-react";
+import { Users, Calendar, User, LogOut, Settings } from "lucide-react";
 
 export function AppSidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const getMenuItems = () => {
+    const baseItems = [
+      {
+        title: "Profile",
+        url: "/profile",
+        icon: Settings,
+      },
+    ];
+
     if (user?.role === 'admin') {
       return [
         {
@@ -38,6 +46,7 @@ export function AppSidebar() {
           url: "/admin/tasks",
           icon: Calendar,
         },
+        ...baseItems,
       ];
     } else if (user?.role === 'manager') {
       return [
@@ -51,6 +60,7 @@ export function AppSidebar() {
           url: "/manager/tasks",
           icon: Calendar,
         },
+        ...baseItems,
       ];
     } else {
       return [
@@ -59,6 +69,7 @@ export function AppSidebar() {
           url: "/employee/dashboard",
           icon: Calendar,
         },
+        ...baseItems,
       ];
     }
   };
@@ -73,7 +84,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">TF</span>
+            <span className="text-white font-bold text-sm">TP</span>
           </div>
           <span className="font-playfair font-bold text-lg text-primary">TaskPilot</span>
         </div>

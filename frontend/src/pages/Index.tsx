@@ -78,9 +78,9 @@ const Index = () => {
                 onClick={() => navigate('/admin-signup')}
                 variant="outline"
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-3"
+                className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-3"
               >
-                Start Free Trial
+                Register Your Account
               </Button>
             </div>
           </div>

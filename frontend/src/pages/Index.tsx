@@ -80,7 +80,7 @@ const Index = () => {
                 size="lg"
                 className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-3"
               >
-                Register Your Account
+                Register Your Comapny
               </Button>
             </div>
           </div>

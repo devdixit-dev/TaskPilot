@@ -122,7 +122,7 @@ export function AppSidebar() {
             onClick={handleLogout}
             variant="outline" 
             size="sm" 
-            className="w-full justify-start"
+            className="w-full justify-start bg-red-500 text-white hover:bg-red-500 hover:text-white hover:opacity-9"
           >
             <LogOut className="w-4 h-4 mr-2" />
             Logout

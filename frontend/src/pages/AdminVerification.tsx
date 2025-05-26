@@ -37,7 +37,7 @@ const AdminVerification = () => {
           description: `Welcome to TaskPilot Admin 🫡!`,
         });
 
-        navigate('/admin/dashboard');
+        navigate('/login');
       }
       else{
         toast({

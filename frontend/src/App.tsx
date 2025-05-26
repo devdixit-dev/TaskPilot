@@ -15,6 +15,7 @@ import UserManagement from "./pages/UserManagement";
 import TaskManagement from "./pages/TaskManagement";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import AdminVerification from "./pages/AdminVerification";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin-signup" element={<AdminSignup />} />
+            <Route path="/admin-verification" element={<AdminVerification />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/manager/dashboard" element={<ManagerDashboard />} />
             <Route path="/employee/dashboard" element={<EmployeeDashboard />} />

@@ -58,10 +58,10 @@ const AdminSignup = () => {
       
       toast({
         title: "Account created successfully!",
-        description: `Welcome to TaskForge Pro, ${formData.contactPersonName}!`,
+        description: `Welcome to TaskPilot, ${formData.contactPersonName} please verify your account!`,
       });
 
-      navigate('/admin/dashboard');
+      navigate('/admin-verification');
     } catch (error) {
       toast({
         title: "Error",

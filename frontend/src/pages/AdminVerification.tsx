@@ -34,7 +34,7 @@ const AdminVerification = () => {
       if(checkOTP) {
         toast({
           title: "Account verified successfully!",
-          description: `Welcome to TaskPilot Admin 🫡!`,
+          description: `Login into your account & setup your dashboard!`,
         });
 
         navigate('/login');

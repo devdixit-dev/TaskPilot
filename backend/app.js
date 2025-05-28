@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 app.use(compression());
 app.use(cookieParser());
 
-app.use('/api', authRouter);
+app.use('/api/auth', authRouter);
 
 ConnectionToDatabase();
 

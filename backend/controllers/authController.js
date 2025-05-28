@@ -137,6 +137,12 @@ export const CompanyVerification = async (req, res) => {
 
     findCompany.save();
 
+    res.clearCookie('regToken', {
+      httpOnly: true,
+      sameSite: 'strict'
+    });
+
+
     return res.json({
       success: true,
       message: 'Your company has been verified successfully'
@@ -184,7 +190,7 @@ export const Login = async (req, res) => {
       })
     }
 
-    if(!user.isUserVerified) {
+    if (!user.isUserVerified) {
       return res.json({
         success: false,
         message: 'You are not verified user. contact your admin'
@@ -202,11 +208,11 @@ export const Login = async (req, res) => {
 
     // Redirect based on user role
     if (user.userRole === 'admin') {
-      return res.redirect('/admin-dashboard');
+      return res.send('/admin-dashboard');
     } else if (user.userRole === 'manager') {
-      return res.redirect('/manager-dashboard');
+      return res.send('/manager-dashboard');
     } else {
-      return res.redirect('/user-dashboard');
+      return res.send('/user-dashboard');
     }
   }
   catch (e) {

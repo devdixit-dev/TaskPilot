@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import bcrypt from 'bcryptjs';
-import jwt, { decode } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 import Company from "../models/Company.js";
 import User from '../models/User.js';
@@ -57,19 +57,19 @@ export const CompanySignUP = async (req, res) => {
     const token = jwt.sign({ id: createCompany._id, role: createAdmin.userRole }, process.env.JWT_SECRET, { expiresIn: '30m' });
 
     return res
-    .cookie('regToken', token, {
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 30 * 60 * 1000, // 30min
-    })
-    .json({
-      success: true,
-      message: 'Your account is created, verify your account !',
-      company: createCompany,
-      admin: createAdmin
-    })
+      .cookie('regToken', token, {
+        httpOnly: true,
+        sameSite: 'strict',
+        maxAge: 30 * 60 * 1000, // 30min
+      })
+      .json({
+        success: true,
+        message: 'Your account is created, verify your account !',
+        company: createCompany,
+        admin: createAdmin
+      })
   }
-  catch(e) {
+  catch (e) {
     console.log(`Server error: ${e}`);
     res.status(500).json({
       success: false,
@@ -82,19 +82,19 @@ export const CompanyVerification = async (req, res) => {
   const token = req.cookies.regToken;
   const otp = req.body;
 
-  try{
-    if(!token) {
+  try {
+    if (!token) {
       return res.status(401).json(
         { message: 'No token provided' }
       );
     }
 
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userID = decodedToken.id;
-    
-    const findCompany = await Company.findOne({ _id: userID });
+    const companyID = decodedToken.id;
 
-    if(!findCompany) {
+    const findCompany = await Company.findOne({ _id: companyID });
+
+    if (!findCompany) {
       return res.json({
         success: false,
         message: 'Your company has not registered yet'
@@ -103,14 +103,14 @@ export const CompanyVerification = async (req, res) => {
 
     const alreadyVerified = findCompany.isCompanyVerified;
 
-    if(alreadyVerified) {
+    if (alreadyVerified) {
       return res.json({
         success: true,
         message: 'Your account is already verified. You can login now'
       })
     }
 
-    if(Date.now() >= findCompany.companyVerifyOtpExpiresAt){
+    if (Date.now() >= findCompany.companyVerifyOtpExpiresAt) {
       return res.json({
         success: false,
         message: 'Your account is locked, cause of late verification. contact admin.'
@@ -119,7 +119,7 @@ export const CompanyVerification = async (req, res) => {
 
     const checkOtp = findCompany.companyVerifyOtp === otp.otp;
 
-    if(!checkOtp) {
+    if (!checkOtp) {
       return res.json({
         success: false,
         message: 'Incorrect OTP, check your email once again'
@@ -128,6 +128,13 @@ export const CompanyVerification = async (req, res) => {
 
     findCompany.companyVerifyOtp = '';
     findCompany.isCompanyVerified = true;
+
+    // find admin and verify admin
+    const adminID = findCompany.companyAdmin;
+    const user = await User.findOne({ _id: adminID });
+    user.isUserVerified = true;
+    user.save();
+
     findCompany.save();
 
     return res.json({
@@ -135,7 +142,7 @@ export const CompanyVerification = async (req, res) => {
       message: 'Your company has been verified successfully'
     })
   }
-  catch(e) {
+  catch (e) {
     console.log(`Server error: ${e}`);
     res.status(500).json({
       success: false,
@@ -147,11 +154,11 @@ export const CompanyVerification = async (req, res) => {
 export const Login = async (req, res) => {
   const { email, password } = req.body;
 
-  try{
+  try {
 
     const user = await User.findOne({ userEmail: email });
 
-    if(!user){
+    if (!user) {
       return res.json({
         success: false,
         message: 'User not found.'
@@ -160,7 +167,7 @@ export const Login = async (req, res) => {
 
     const decodePassword = await bcrypt.compare(password, user.password);
 
-    if(!decodePassword){
+    if (!decodePassword) {
       return res.json({
         success: false,
         message: 'Incorrect email or password'
@@ -169,7 +176,7 @@ export const Login = async (req, res) => {
 
     const findUserCompany = await Company.findOne({ companyName: user.userCompany });
 
-    if(!findUserCompany.isCompanyVerified){
+    if (!findUserCompany.isCompanyVerified) {
       return res.json({
         success: false,
         message: 'Your company verification is pending',
@@ -177,29 +184,32 @@ export const Login = async (req, res) => {
       })
     }
 
-    if(user.userRole === "admin"){
+    if(!user.isUserVerified) {
       return res.json({
-        success: true,
-        message: 'Hello, Admin !',
-        role: user.userRole
+        success: false,
+        message: 'You are not verified user. contact your admin'
       })
     }
-    else if(user.userRole === "manager"){
-      return res.json({
-        success: true,
-        message: 'Hello, Manager !',
-        role: user.userRole
-      })
-    }
-    else{
-      return res.json({
-        success: true,
-        message: 'Hello, User !',
-        role: user.userRole
-      })
+
+    const token = jwt.sign({ id: user._id, role: user.userRole }, process.env.JWT_SECRET, { expiresIn: '60m' });
+
+    // Set the cookie
+    res.cookie('session-uid', token, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 1000, // 1h
+    });
+
+    // Redirect based on user role
+    if (user.userRole === 'admin') {
+      return res.redirect('/admin-dashboard');
+    } else if (user.userRole === 'manager') {
+      return res.redirect('/manager-dashboard');
+    } else {
+      return res.redirect('/user-dashboard');
     }
   }
-  catch(e) {
+  catch (e) {
     console.log(`Server error: ${e}`);
     res.status(500).json({
       success: false,

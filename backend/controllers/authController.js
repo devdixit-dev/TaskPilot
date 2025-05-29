@@ -2,6 +2,8 @@ import { nanoid } from 'nanoid';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import decodeJwt from '../utills/decodeJwt.js';
+
 import Company from "../models/Company.js";
 import User from '../models/User.js';
 
@@ -79,18 +81,17 @@ export const CompanySignUP = async (req, res) => {
 }
 
 export const CompanyVerification = async (req, res) => {
-  const token = req.cookies.regToken;
+  const userToken = decodeJwt(req.cookies['session-uid']);
   const otp = req.body;
 
   try {
-    if (!token) {
+    if (!userToken) {
       return res.status(401).json(
         { message: 'No token provided' }
       );
     }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const companyID = decodedToken.id;
+    const companyID = userToken.id;
 
     const findCompany = await Company.findOne({ _id: companyID });
 

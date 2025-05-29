@@ -1,21 +1,20 @@
-import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import Company from '../models/Company.js';
 
+import decodeJwt from '../utills/decodeJwt.js';
+
 export const GetAdminDashboard = async (req, res) => {
   try {
-    const token = req.cookies['session-uid']
+    const userToken = decodeJwt(req.cookies['session-uid']);
 
-    if (!token) {
+    if (!userToken) {
       return res.json({
         success: false,
         message: 'Unauthorized access denied'
       })
     }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await User.findOne({ _id: decodedToken.id });
+    const user = await User.findOne({ _id: userToken.id });
 
     if (!user) {
       return res.json({
@@ -47,10 +46,10 @@ export const GetAdminDashboard = async (req, res) => {
 }
 
 export const UserLogOut = async (req, res) => {
-  const token = req.cookies['session-uid'];
+  const userToken = decodeJwt(req.cookies['session-uid']);
 
   try {
-    if (!token) {
+    if (!userToken) {
       return res.json({
         success: false,
         message: 'Unauthorized access denied'

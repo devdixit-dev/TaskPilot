@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import Company from '../models/Company.js';
 
 export const GetAdminDashboard = async (req, res) => {
   try {
@@ -23,11 +24,17 @@ export const GetAdminDashboard = async (req, res) => {
       })
     }
 
+    const company = await Company.findOne({ companyName: user.userCompany });
+
     return res.json({
       success: true,
       name: user.userFullname,
       email: user.userEmail,
-      company: user.userCompany
+      company: user.userCompany,
+      total_employees: company.companyEmployees.length,
+      total_tasks: company.companyTasks.length,
+      completed_today: 20,
+      productivity: '10%' 
     });
   }
   catch (e) {

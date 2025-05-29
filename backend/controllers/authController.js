@@ -126,7 +126,7 @@ export const CompanyVerification = async (req, res) => {
       })
     }
 
-    findCompany.companyVerifyOtp = '';
+    findCompany.companyVerifyOtp = null;
     findCompany.isCompanyVerified = true;
 
     // find admin and verify admin
@@ -212,7 +212,7 @@ export const Login = async (req, res) => {
     } else if (user.userRole === 'manager') {
       return res.send('/manager-dashboard');
     } else {
-      return res.send('/user-dashboard');
+      return res.send('/employee-dashboard');
     }
   }
   catch (e) {

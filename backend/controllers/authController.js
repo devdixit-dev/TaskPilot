@@ -81,7 +81,8 @@ export const CompanySignUP = async (req, res) => {
 }
 
 export const CompanyVerification = async (req, res) => {
-  const userToken = decodeJwt(req.cookies['session-uid']);
+  const userToken = decodeJwt(req.cookies['reg-token']);
+  console.log(userToken);
   const otp = req.body;
 
   try {

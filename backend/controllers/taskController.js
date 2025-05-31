@@ -35,14 +35,19 @@ export const CreateNewTask = async (req, res) => {
 
     task.taskCreatedBy.push(userToken.id);
 
-    // const taskCreatedBy = await User.findOne({ _id: userToken.id });
-    // const taskForEmployee = await User.findOne({ userFullname: taskFor });
+    const taskCreatedBy = await User.findOne({ _id: userToken.id }); // get admin id
+    const taskForEmployee = await User.findOne({ userFullname: taskFor }); // get user id
+    const company = await Company.findOne({ companyName: taskCreatedBy.userCompany }); // get company name
+
+    company.companyTasks.push(task._id);
+    taskForEmployee.userTasks.push(task._id);
+
+    company.save();
+    task.save();
 
     return res.json({
       success: true,
-      task: task,
-      // createdBy: taskCreatedBy,
-      // for: taskForEmployee
+      message: `New task assign for ${taskForEmployee} from ${taskCreatedBy}.`
     });
   }
   catch (e) {

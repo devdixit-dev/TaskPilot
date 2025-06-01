@@ -8,14 +8,14 @@ import Company from "../models/Company.js";
 import User from '../models/User.js';
 
 export const CompanySignUP = async (req, res) => {
-  const {
-    companyName,
-    contactPersonFullname,
-    companyEmail,
-    password
-  } = req.body;
-
   try {
+    const {
+      companyName,
+      contactPersonFullname,
+      companyEmail,
+      password
+    } = req.body;
+
     const user = await Company.findOne({ companyEmail });
 
     if (user) {
@@ -81,7 +81,7 @@ export const CompanySignUP = async (req, res) => {
 }
 
 export const CompanyVerification = async (req, res) => {
-  const userToken = decodeJwt(req.cookies['reg-token']);
+  const userToken = decodeJwt(req.cookies['regToken']);
   console.log(userToken);
   const otp = req.body;
 

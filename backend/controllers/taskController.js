@@ -33,7 +33,7 @@ export const CreateNewTask = async (req, res) => {
       taskStatus: "pending"
     })
 
-    task.taskCreatedBy.push(userToken.id);
+    // task.taskCreatedBy.push(userToken.id);
 
     const taskCreatedBy = await User.findOne({ _id: userToken.id }); // get admin id
     const taskForEmployee = await User.findOne({ userFullname: taskFor }); // get user id
@@ -42,12 +42,13 @@ export const CreateNewTask = async (req, res) => {
     company.companyTasks.push(task._id);
     taskForEmployee.userTasks.push(task._id);
 
+    taskForEmployee.save();
     company.save();
     task.save();
 
     return res.json({
       success: true,
-      message: `New task assign for ${taskForEmployee} from ${taskCreatedBy}.`
+      message: `New task assign for ${taskForEmployee.userFullname} from ${taskCreatedBy.userFullname}.`
     });
   }
   catch (e) {

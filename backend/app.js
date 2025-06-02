@@ -10,6 +10,7 @@ import { ConnectionToDatabase } from './config/db.js';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import taskRouter from './routes/taskRoutes.js';
+import loggerFunc from './utills/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(compression());
 app.use(cookieParser());
+app.use(loggerFunc);
 
 app.use('/api/auth', authRouter);
 app.use('/', userRouter);

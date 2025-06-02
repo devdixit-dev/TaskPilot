@@ -150,12 +150,12 @@ const AdminDashboard = () => {
                   <h3 className="font-medium text-sm">Create Task</h3>
                   <p className="text-xs text-muted-foreground">Assign new task</p>
                 </div>
-                <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors">
+                <div className="p-4 border rounded-lg bg-gray-100 cursor-pointer transition-colors">
                   <CheckSquare className="w-8 h-8 text-primary mb-2" />
                   <h3 className="font-medium text-sm">View Reports</h3>
                   <p className="text-xs text-muted-foreground">Performance analytics</p>
                 </div>
-                <div className="p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors">
+                <div className="p-4 border rounded-lg bg-gray-100 cursor-pointer transition-colors">
                   <TrendingUp className="w-8 h-8 text-primary mb-2" />
                   <h3 className="font-medium text-sm">Team Analytics</h3>
                   <p className="text-xs text-muted-foreground">Productivity insights</p>

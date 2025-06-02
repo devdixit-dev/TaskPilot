@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import Company from '../models/Company.js';
+import Task from '../models/Task.js';
 import bcrypt from 'bcryptjs'
 
 import decodeJwt from '../utills/decodeJwt.js';
@@ -26,19 +27,30 @@ export const GetAdminDashboard = async (req, res) => {
 
     const company = await Company.findOne({ companyName: user.userCompany });
 
-    return res.json({
+    const tasks = await Task.find();
+
+    res.send(`
+      <div>
+        ${tasks.map(task => `<p>${task.taskCreatedBy} assigned to ${task.taskForEmployee}</p>`).join('')}
+      </div>
+    `);
+
+
+    res.json({
       success: true,
-      name: user.userFullname,
-      email: user.userEmail,
-      company: user.userCompany,
-      total_employees: company.companyEmployees.length,
-      total_tasks: company.companyTasks.length,
-      completed_today: 20,
-      productivity: '10%' 
+      "header": {
+        name: user.userFullname,
+        email: user.userEmail,
+        company: user.userCompany,
+        total_employees: company.companyEmployees.length,
+        total_tasks: company.companyTasks.length,
+        completed_today: 20,
+        productivity: '80%'
+      },
     });
   }
   catch (e) {
-    console.log(`Server error: ${e}`);
+    console.log(`Server error: ${e} `);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error'
@@ -67,7 +79,7 @@ export const UserLogOut = async (req, res) => {
     })
   }
   catch (e) {
-    console.log(`Server error: ${e}`);
+    console.log(`Server error: ${e} `);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error'
@@ -76,35 +88,35 @@ export const UserLogOut = async (req, res) => {
 }
 
 export const AddNewUser = async (req, res) => {
-  try{
+  try {
     const userToken = decodeJwt(req.cookies['session-uid']);
 
-    if(!userToken) {
+    if (!userToken) {
       return res.json({
         success: false,
         message: 'Unauthorized access denied'
       })
     }
 
-    if(!userToken.role === 'admin') {
+    if (!userToken.role === 'admin') {
       return res.json({
         success: false,
         message: 'You are not an admin'
       })
     }
 
-    const {name, email, password, role} = req.body;
+    const { name, email, password, role } = req.body;
 
     const isUserExist = await User.findOne({ userEmail: email });
 
-    if(isUserExist) {
+    if (isUserExist) {
       return res.json({
         success: false,
         message: 'This user is already exist'
       })
     }
 
-    if(role === 'admin'){
+    if (role === 'admin') {
       return res.json({
         success: false,
         message: 'You are not become an admin. please contact your IT team to become an admin'
@@ -125,10 +137,10 @@ export const AddNewUser = async (req, res) => {
     });
 
     const company = await Company.findOne({ companyName: admin.userCompany });
-    if(role === 'manager') {
+    if (role === 'manager') {
       company.companyManagers.push(user._id);
     }
-    else{
+    else {
       company.companyEmployees.push(user._id);
     }
     await company.save();
@@ -139,7 +151,7 @@ export const AddNewUser = async (req, res) => {
     })
   }
   catch (e) {
-    console.log(`Server error: ${e}`);
+    console.log(`Server error: ${e} `);
     res.status(500).json({
       success: false,
       message: 'Internal Server Error'

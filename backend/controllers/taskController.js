@@ -24,22 +24,23 @@ export const CreateNewTask = async (req, res) => {
 
     const {name, desc, taskFor, urgency} = req.body;
 
-    const task = await Task.create({
-      taskName: name,
-      taskDesc: desc,
-      taskCreatedBy: userToken.id,
-      taskForEmployee: taskFor,
-      taskUrgency: urgency,
-      taskStatus: "pending"
-    })
-
     const taskCreatedBy = await User.findOne({ _id: userToken.id }); // get admin id
     const taskForEmployee = await User.findOne({ userFullname: taskFor }); // get user id
     const company = await Company.findOne({ companyName: taskCreatedBy.userCompany }); // get company name
 
+    const task = await Task.create({
+      taskName: name,
+      taskDesc: desc,
+      taskCreatedBy: taskCreatedBy.userFullname,
+      taskForEmployee: taskForEmployee.userFullname,
+      taskUrgency: urgency,
+      taskStatus: "pending"
+    })
+
     company.companyTasks.push(task._id);
     taskForEmployee.userTasks.push(task._id);
-
+    
+    taskCreatedBy.save();
     taskForEmployee.save();
     company.save();
     task.save();

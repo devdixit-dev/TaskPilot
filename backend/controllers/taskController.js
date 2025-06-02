@@ -15,10 +15,10 @@ export const CreateNewTask = async (req, res) => {
       })
     }
 
-    if(!userToken.role === 'admin') {
+    if(!userToken.role === 'admin' && !userToken.role === 'manager') {
       return res.json({
         success: false,
-        message: 'You are not an admin'
+        message: 'You are not an authorized person for creating tasks'
       })
     }
 
@@ -32,8 +32,6 @@ export const CreateNewTask = async (req, res) => {
       taskUrgency: urgency,
       taskStatus: "pending"
     })
-
-    // task.taskCreatedBy.push(userToken.id);
 
     const taskCreatedBy = await User.findOne({ _id: userToken.id }); // get admin id
     const taskForEmployee = await User.findOne({ userFullname: taskFor }); // get user id

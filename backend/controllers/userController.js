@@ -158,3 +158,51 @@ export const AddNewUser = async (req, res) => {
     })
   }
 }
+
+export const ChangePassword = async (req, res) => {
+  try{
+    const userToken = decodeJwt(req.cookies['session-uid']);
+
+    const user = await User.findOne({ _id: userToken.id });
+
+    if(!user) {
+      return res.json({
+        success: false,
+        message: 'Unauthorized access denied'
+      })
+    }
+
+    const { currentPassword, newPassword } = req.body;
+
+    const decodePassword = await bcrypt.compare(currentPassword, user.password);
+
+    if(!decodePassword) {
+      return res.json({
+        success: false,
+        message: 'Password do not match with current password. Contact admin'
+      })
+    }
+
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+
+    const company = await Company.findOne({ companyName: user.userCompany });
+
+    user.password = hashPassword;
+    company.password = hashPassword;
+    
+    user.save();
+    company.save();
+
+    return res.json({
+      success: true,
+      message: 'Your password successfully changed'
+    })
+  }
+  catch (e) {
+    console.log(`Server error: ${e} `);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error'
+    })
+  }
+}

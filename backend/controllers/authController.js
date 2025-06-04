@@ -198,6 +198,13 @@ export const Login = async (req, res) => {
       })
     }
 
+    if(!user.isUserActive) {
+      return res.json({
+        success: false,
+        message: 'Your account is Deactivated at this time. Contact your admin'
+      })
+    }
+
     const token = jwt.sign({ id: user._id, role: user.userRole }, process.env.JWT_SECRET, { expiresIn: '60m' });
 
     // Set the cookie

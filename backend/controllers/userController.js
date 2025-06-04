@@ -29,13 +29,6 @@ export const GetAdminDashboard = async (req, res) => {
 
     const tasks = await Task.find();
 
-    res.send(`
-      <div>
-        ${tasks.map(task => `<p>${task.taskCreatedBy} assigned to ${task.taskForEmployee}</p>`).join('')}
-      </div>
-    `);
-
-
     res.json({
       success: true,
       "header": {
@@ -47,6 +40,8 @@ export const GetAdminDashboard = async (req, res) => {
         completed_today: 20,
         productivity: '80%'
       },
+      "total_tasks": tasks.length,
+      "recent_tasks": `${user.userFullname} assigned task to User`
     });
   }
   catch (e) {
@@ -159,13 +154,120 @@ export const AddNewUser = async (req, res) => {
   }
 }
 
+export const DeactivateUser = async (req, res) => {
+  try {
+    const userToken = decodeJwt(req.cookies['session-uid']);
+
+    if (!userToken) {
+      return res.json({
+        success: false,
+        message: 'Unauthorized access denied'
+      })
+    }
+
+    if (!userToken.role === 'admin') {
+      return res.json({
+        success: false,
+        message: 'You are not an admin'
+      })
+    }
+
+    const id = req.params.id;
+
+    const user = await User.findOne({ _id: id });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found"
+      })
+    }
+
+    if (user.isUserActive) {
+      user.isUserActive = false
+    }
+    else {
+      user.isUserActive = true
+    }
+
+    user.save();
+
+    return res.json({
+      success: true,
+      "User ID": userToken.id,
+      "user_status": user.isUserActive
+    });
+  }
+  catch (e) {
+    console.log(`Server error: ${e} `);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error'
+    })
+  }
+}
+
+export const RemoveUser = async (req, res) => {
+  try {
+    const userToken = decodeJwt(req.cookies['session-uid']);
+
+    if (!userToken) {
+      return res.json({
+        success: false,
+        message: 'Unauthorized access denied'
+      })
+    }
+
+    if (!userToken.role === 'admin') {
+      return res.json({
+        success: false,
+        message: 'You are not an admin'
+      })
+    }
+
+    const admin = await User.findOne({ _id: userToken.id });
+    const id = req.params.id;
+
+    const user = await User.findOne({ _id: id });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found"
+      })
+    }
+
+    const company = await Company.findOne({ companyName: user.userCompany });
+
+    if (company.companyEmployees.some(empId => empId.equals(id))) {
+      company.companyEmployees = company.companyEmployees.filter(empId => !empId.equals(id));
+      await company.save();
+    }
+
+    const removeUser = await User.deleteOne({ _id: user._id });
+
+    return res.json({
+      success: true,
+      message: `${user.userFullname} removed by ${admin.userFullname}`
+    })
+
+  }
+  catch (e) {
+    console.log(`Server error: ${e} `);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error'
+    })
+  }
+}
+
 export const ChangePassword = async (req, res) => {
-  try{
+  try {
     const userToken = decodeJwt(req.cookies['session-uid']);
 
     const user = await User.findOne({ _id: userToken.id });
 
-    if(!user) {
+    if (!user) {
       return res.json({
         success: false,
         message: 'Unauthorized access denied'
@@ -176,7 +278,7 @@ export const ChangePassword = async (req, res) => {
 
     const decodePassword = await bcrypt.compare(currentPassword, user.password);
 
-    if(!decodePassword) {
+    if (!decodePassword) {
       return res.json({
         success: false,
         message: 'Password do not match with current password. Contact admin'
@@ -189,7 +291,7 @@ export const ChangePassword = async (req, res) => {
 
     user.password = hashPassword;
     company.password = hashPassword;
-    
+
     user.save();
     company.save();
 

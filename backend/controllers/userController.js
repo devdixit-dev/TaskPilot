@@ -26,7 +26,7 @@ export const GetAdminDashboard = async (req, res) => {
     }
 
     const company = await Company.findOne({ companyName: user.userCompany });
-
+    const users = await User.find();
     const tasks = await Task.find();
 
     res.json({
@@ -40,8 +40,8 @@ export const GetAdminDashboard = async (req, res) => {
         completed_today: 20,
         productivity: '80%'
       },
+      "total_users": users.length,
       "total_tasks": tasks.length,
-      "recent_tasks": `${user.userFullname} assigned task to User`
     });
   }
   catch (e) {
@@ -93,7 +93,7 @@ export const AddNewUser = async (req, res) => {
       })
     }
 
-    if (!userToken.role === 'admin') {
+    if (userToken.role !== 'admin') {
       return res.json({
         success: false,
         message: 'You are not an admin'
@@ -157,6 +157,7 @@ export const AddNewUser = async (req, res) => {
 export const DeactivateUser = async (req, res) => {
   try {
     const userToken = decodeJwt(req.cookies['session-uid']);
+    console.log(userToken)
 
     if (!userToken) {
       return res.json({
@@ -165,7 +166,7 @@ export const DeactivateUser = async (req, res) => {
       })
     }
 
-    if (!userToken.role === 'admin') {
+    if (userToken.role !== 'admin') {
       return res.json({
         success: false,
         message: 'You are not an admin'
@@ -183,13 +184,7 @@ export const DeactivateUser = async (req, res) => {
       })
     }
 
-    if (user.isUserActive) {
-      user.isUserActive = false
-    }
-    else {
-      user.isUserActive = true
-    }
-
+    user.isUserActive = !user.isUserActive;
     user.save();
 
     return res.json({
@@ -218,7 +213,7 @@ export const RemoveUser = async (req, res) => {
       })
     }
 
-    if (!userToken.role === 'admin') {
+    if (userToken.role !== 'admin') {
       return res.json({
         success: false,
         message: 'You are not an admin'

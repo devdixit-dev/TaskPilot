@@ -15,7 +15,7 @@ export const CreateNewTask = async (req, res) => {
       })
     }
 
-    if(!userToken.role === 'admin' && !userToken.role === 'manager') {
+    if(userToken.role !== 'admin' && userToken.role !== 'manager') {
       return res.json({
         success: false,
         message: 'You are not an authorized person for creating tasks'

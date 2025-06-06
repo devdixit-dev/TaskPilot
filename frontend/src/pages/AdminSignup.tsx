@@ -1,37 +1,27 @@
-
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import axios from 'axios'
 
 const AdminSignup = () => {
-  const [formData, setFormData] = useState({
-    companyName: '',
-    contactPersonName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [companyName, setCompanyName] = useState('')
+  const [contactPerson, setContactPerson] = useState('')
+  const [companyEmail, setCompanyEmail] = useState('')
+  const [companyPassword, setCompanyPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    if (formData.password !== formData.confirmPassword) {
+    if (companyPassword !== confirmPassword) {
       toast({
         title: "Password mismatch",
         description: "Passwords do not match",
@@ -44,21 +34,17 @@ const AdminSignup = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const newAdmin = {
-        id: Date.now().toString(),
-        email: formData.email,
-        name: formData.contactPersonName,
-        role: 'admin' as const,
-        companyName: formData.companyName,
-        contactPerson: formData.contactPersonName
-      };
 
-      login(newAdmin);
+      const response = await axios.post('http://localhost:4000/api/auth/signup', {
+        companyName,
+        contactPersonFullname: contactPerson,
+        companyEmail,
+        password: companyPassword
+      }, { withCredentials: true })
       
       toast({
         title: "Account created successfully!",
-        description: `Welcome to TaskPilot, ${formData.contactPersonName} please verify your account!`,
+        description: `Welcome to TaskPilot, ${contactPerson} please verify your account!`,
       });
 
       navigate('/admin-verification');
@@ -100,8 +86,8 @@ const AdminSignup = () => {
                   name="companyName"
                   type="text"
                   placeholder="Enter your company name"
-                  value={formData.companyName}
-                  onChange={handleChange}
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   required
                   className="h-11"
                 />
@@ -114,8 +100,8 @@ const AdminSignup = () => {
                   name="contactPersonName"
                   type="text"
                   placeholder="Enter your full name"
-                  value={formData.contactPersonName}
-                  onChange={handleChange}
+                  value={contactPerson}
+                  onChange={(e) => setContactPerson(e.target.value)}
                   required
                   className="h-11"
                 />
@@ -128,8 +114,8 @@ const AdminSignup = () => {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={companyEmail}
+                  onChange={(e) => setCompanyEmail(e.target.value)}
                   required
                   className="h-11"
                 />
@@ -142,8 +128,8 @@ const AdminSignup = () => {
                   name="password"
                   type="password"
                   placeholder="Create a strong password"
-                  value={formData.password}
-                  onChange={handleChange}
+                  value={companyPassword}
+                  onChange={(e) => setCompanyPassword(e.target.value)}
                   required
                   className="h-11"
                 />
@@ -156,15 +142,16 @@ const AdminSignup = () => {
                   name="confirmPassword"
                   type="password"
                   placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   className="h-11"
                 />
               </div>
 
               <Button 
-                type="submit" 
+                type="submit"
+                onClick={handleSubmit} 
                 className="w-full h-11 bg-primary hover:bg-primary-light font-semibold mt-6"
                 disabled={loading}
               >

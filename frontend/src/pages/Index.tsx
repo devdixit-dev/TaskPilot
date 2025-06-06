@@ -1,31 +1,10 @@
-
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Users, Calendar, CheckSquare } from 'lucide-react';
+import { Users, Calendar, CheckSquare, Github } from 'lucide-react';
 
 const Index = () => {
-  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      // Redirect to appropriate dashboard based on role
-      switch (user.role) {
-        case 'admin':
-          navigate('/admin/dashboard');
-          break;
-        case 'manager':
-          navigate('/manager/dashboard');
-          break;
-        case 'employee':
-          navigate('/employee/dashboard');
-          break;
-      }
-    }
-  }, [isAuthenticated, user, navigate]);
 
   const features = [
     {
@@ -123,7 +102,7 @@ const Index = () => {
       <footer className="bg-primary text-white py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-blue-100">
-            © 2025 TaskPilot. All rights reserved. | Professional Task Management Solutions
+            © 2025 TaskPilot. All rights reserved. | Professional Task Management Solutions | Made by <a href='https://github.com/devdixit-dev' target='_blank' className='border-b-2 border-red-500'>Dev Dixit</a>
           </p>
         </div>
       </footer>

@@ -7,78 +7,79 @@ import decodeJwt from '../utills/decodeJwt.js';
 import Company from "../models/Company.js";
 import User from '../models/User.js';
 
-export const CompanySignUP = async (req, res) => {
-  try {
-    const {
-      companyName,
-      contactPersonFullname,
-      companyEmail,
-      password
-    } = req.body;
+  export const CompanySignUP = async (req, res) => {
+    try {
+      const {
+        companyName,
+        contactPersonFullname,
+        companyEmail,
+        password
+      } = req.body;
 
-    const user = await Company.findOne({ companyEmail });
+      const user = await Company.findOne({ companyEmail });
 
-    if (user) {
-      return res.json({
-        success: false,
-        message: 'Company is already exist'
+      if (user) {
+        return res.json({
+          success: false,
+          message: 'Company is already exist'
+        });
+      }
+
+      const hashPassword = await bcrypt.hash(password, 10);
+
+      const CompanyID = nanoid(8);
+
+      // create company account
+      const createCompany = await Company.create({
+        companyId: CompanyID,
+        companyName,
+        contactPersonFullname,
+        companyEmail,
+        password: hashPassword,
       });
+
+      // create admin account
+      const createAdmin = await User.create({
+        userFullname: contactPersonFullname,
+        userEmail: companyEmail,
+        password: hashPassword,
+        userRole: 'admin',
+        userCompany: companyName,
+      });
+
+      createCompany.companyAdmin.push(createAdmin._id);
+
+      // create random otp
+      const randomOtp = Math.floor(100000 + Math.random() * 900000); // always 6 digits
+
+      createAdmin.save();
+
+      createCompany.companyVerifyOtp = randomOtp;
+      createCompany.save();
+
+      const token = jwt.sign({ id: createCompany._id, role: createAdmin.userRole }, process.env.JWT_SECRET, { expiresIn: '30m' });
+
+      return res
+        .cookie('regToken', token, {
+          httpOnly: true,
+          sameSite: 'strict',
+          maxAge: 30 * 60 * 1000, // 30min
+        })
+        .json({
+          success: true,
+          message: 'Your account is created, verify your account !',
+          company: createCompany,
+          admin: createAdmin
+        })
     }
-
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    const CompanyID = nanoid(8);
-
-    // create company account
-    const createCompany = await Company.create({
-      companyId: CompanyID,
-      companyName,
-      contactPersonFullname,
-      companyEmail,
-      password: hashPassword,
-    });
-
-    // create admin account
-    const createAdmin = await User.create({
-      userFullname: contactPersonFullname,
-      userEmail: companyEmail,
-      password: hashPassword,
-      userRole: 'admin',
-      userCompany: companyName,
-    });
-    createAdmin.save();
-
-    createCompany.companyAdmin.push(createAdmin._id);
-
-    // create random otp
-    const randomOtp = Math.round(Math.random() * 999999);
-
-    createCompany.companyVerifyOtp = randomOtp;
-    createCompany.save();
-
-    const token = jwt.sign({ id: createCompany._id, role: createAdmin.userRole }, process.env.JWT_SECRET, { expiresIn: '30m' });
-
-    return res
-      .cookie('regToken', token, {
-        httpOnly: true,
-        sameSite: 'strict',
-        maxAge: 30 * 60 * 1000, // 30min
+    catch (e) {
+      console.log(`Server error: ${e}`);
+      res.status(500).json({
+        success: false,
+        message: 'Internal Server Error'
       })
-      .json({
-        success: true,
-        message: 'Your account is created, verify your account !',
-        company: createCompany,
-        admin: createAdmin
-      })
+    }
   }
-  catch (e) {
-    console.log(`Server error: ${e}`);
-    res.status(500).json({
-      success: false,
-      message: 'Internal Server Error'
-    })
-  }
-}
 
 export const CompanyVerification = async (req, res) => {
   const userToken = decodeJwt(req.cookies['regToken']);

@@ -29,20 +29,58 @@ export const GetAdminDashboard = async (req, res) => {
     const users = await User.find();
     const tasks = await Task.find();
 
-    res.json({
-      success: true,
-      "header": {
-        name: user.userFullname,
-        email: user.userEmail,
-        company: user.userCompany,
-        total_employees: company.companyEmployees.length,
-        total_tasks: company.companyTasks.length,
-        completed_today: 20,
-        productivity: '80%'
-      },
-      "total_users": users.length,
-      "total_tasks": tasks.length,
-    });
+    switch (user.userRole) {
+      case 'admin':
+        res.json({
+          success: true,
+          "header": {
+            name: user.userFullname,
+            email: user.userEmail,
+            company: user.userCompany,
+            total_employees: company.companyEmployees.length,
+            total_tasks: company.companyTasks.length,
+            completed_today: 20,
+            productivity: '80%'
+          },
+          "total_users": users.length,
+          "total_tasks": tasks.length,
+        });
+        break;
+
+      case 'manager':
+        res.json({
+          success: true,
+          "header": {
+            name: user.userFullname,
+            email: user.userEmail,
+            company: user.userCompany,
+            total_employees: company.companyEmployees.length,
+            total_tasks: company.companyTasks.length,
+            completed_today: 20,
+            productivity: '80%'
+          },
+          "total_users": users.length,
+          "total_tasks": tasks.length,
+        });
+        break;
+
+      case 'employee':
+        res.json({
+          success: true,
+          "header": {
+            name: user.userFullname,
+            email: user.userEmail,
+            company: user.userCompany,
+            total_employees: company.companyEmployees.length,
+            total_tasks: company.companyTasks.length,
+            completed_today: 20,
+            productivity: '80%'
+          },
+          "total_users": users.length,
+          "total_tasks": tasks.length,
+        });
+        break;
+    }
   }
   catch (e) {
     console.log(`Server error: ${e} `);

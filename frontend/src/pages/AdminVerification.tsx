@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import axios from 'axios';
 
 const AdminVerification = () => {
   const [otp, setOtp] = useState('');
-  const correctOTP = '123456';
   const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -29,9 +30,11 @@ const AdminVerification = () => {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1500))
-      const checkOTP = correctOTP === otp
+      const response = await axios.post('http://localhost:4000/api/auth/verify', {
+        otp
+      }, { withCredentials: true })
 
-      if(checkOTP) {
+      if(response.data?.success) {
         toast({
           title: "Account verified successfully!",
           description: `Login into your account & setup your dashboard!`,

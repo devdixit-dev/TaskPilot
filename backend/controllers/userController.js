@@ -1,7 +1,7 @@
 import User from '../models/User.js';
 import Company from '../models/Company.js';
 import Task from '../models/Task.js';
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
 
 import decodeJwt from '../utills/decodeJwt.js';
 

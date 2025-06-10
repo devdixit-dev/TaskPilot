@@ -1,21 +1,36 @@
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DashboardLayout } from '@/components/Layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Calendar, CheckSquare, TrendingUp, BarChart3, PieChart } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { AddUserDialog } from '@/components/AddUserDialog';
 import { CreateTaskDialog } from '@/components/CreateTaskDialog';
+import axios from 'axios';
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
+  const user = {}
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
   const [isCreateTaskDialogOpen, setIsCreateTaskDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/admin/dashboard', {
+          withCredentials: true
+        });
+        const data = response.data
+        console.log(user)
+      } catch (error) {
+        console.error('Error fetching dashboard:', error);
+      }
+    };
+
+    fetchDashboard();
+  }); // Empty array = run only once on component mount
 
   const stats = [
     {
       title: "Total Employees",
-      value: "24",
+      value: 24,
       description: "Active team members",
       icon: Users,
       color: "text-blue-600",
@@ -74,7 +89,7 @@ const AdminDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
           <p className="text-muted-foreground mt-2">
-            Welcome back, {user?.name}! Here's what's happening at {user?.companyName || 'your company'}.
+            Welcome back, User! Here's what's happening at your company.
           </p>
         </div>
 
@@ -134,7 +149,7 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
-                <div 
+                <div
                   className="p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
                   onClick={() => setIsAddUserDialogOpen(true)}
                 >
@@ -142,7 +157,7 @@ const AdminDashboard = () => {
                   <h3 className="font-medium text-sm">Add Employee</h3>
                   <p className="text-xs text-muted-foreground">Create new user account</p>
                 </div>
-                <div 
+                <div
                   className="p-4 border rounded-lg hover:bg-accent cursor-pointer transition-colors"
                   onClick={() => setIsCreateTaskDialogOpen(true)}
                 >
@@ -209,7 +224,7 @@ const AdminDashboard = () => {
                       <span className="text-sm text-muted-foreground">{member.rate}</span>
                     </div>
                     <div className="w-full bg-accent rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-primary rounded-full h-2 transition-all duration-300"
                         style={{ width: member.rate }}
                       ></div>
@@ -226,14 +241,14 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <AddUserDialog 
-        isOpen={isAddUserDialogOpen} 
-        onClose={() => setIsAddUserDialogOpen(false)} 
+      <AddUserDialog
+        isOpen={isAddUserDialogOpen}
+        onClose={() => setIsAddUserDialogOpen(false)}
       />
-      
-      <CreateTaskDialog 
-        isOpen={isCreateTaskDialogOpen} 
-        onClose={() => setIsCreateTaskDialogOpen(false)} 
+
+      <CreateTaskDialog
+        isOpen={isCreateTaskDialogOpen}
+        onClose={() => setIsCreateTaskDialogOpen(false)}
       />
     </DashboardLayout>
   );

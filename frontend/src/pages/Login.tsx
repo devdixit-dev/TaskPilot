@@ -1,46 +1,19 @@
-
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
-  // Mock users for demo purposes
-  const mockUsers = [
-    {
-      id: '1',
-      email: 'admin@company.com',
-      password: 'admin123',
-      name: 'John Admin',
-      role: 'admin' as const,
-      companyName: 'TechCorp Inc.',
-      contactPerson: 'John Admin'
-    },
-    {
-      id: '2',
-      email: 'manager@company.com',
-      password: 'manager123',
-      name: 'Sarah Manager',
-      role: 'manager' as const
-    },
-    {
-      id: '3',
-      email: 'employee@company.com',
-      password: 'employee123',
-      name: 'Mike Employee',
-      role: 'employee' as const
-    }
-  ];
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,30 +22,19 @@ const Login = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const response = await axios.post('http://localhost:4000/api/auth/login', { email, password }, { withCredentials: true });
+
+      console.log(response.data)
       
-      const user = mockUsers.find(u => u.email === email && u.password === password);
-      
-      if (user) {
-        const { password: _, ...userData } = user;
-        login(userData);
-        
+      if(response.data.success) {
         toast({
           title: "Login successful!",
-          description: `Welcome ${user.name} 🫡!`,
+          description: `Welcome to the dashboard!`,
         });
 
-        // Redirect based on role
-        switch (user.role) {
-          case 'admin':
-            navigate('/admin/dashboard');
-            break;
-          case 'manager':
-            navigate('/manager/dashboard');
-            break;
-          case 'employee':
-            navigate('/employee/dashboard');
-            break;
-        }
+        navigate(`/${response.data.role}/dashboard`)
+        
       } else {
         toast({
           title: "Login failed",
@@ -145,15 +107,6 @@ const Login = () => {
                 {loading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-
-            <div className="mt-6 p-4 bg-muted rounded-lg">
-              <p className="text-sm font-medium text-center mb-2">Demo Credentials:</p>
-              <div className="text-xs space-y-1">
-                <p><strong>Admin:</strong> admin@company.com / admin123</p>
-                <p><strong>Manager:</strong> manager@company.com / manager123</p>
-                <p><strong>Employee:</strong> employee@company.com / employee123</p>
-              </div>
-            </div>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">

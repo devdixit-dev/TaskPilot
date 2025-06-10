@@ -136,7 +136,7 @@ export const CompanyVerification = async (req, res) => {
     const adminID = findCompany.companyAdmin;
     const user = await User.findOne({ _id: adminID });
     user.isUserVerified = true;
-    
+
     await user.save();
     await findCompany.save();
 
@@ -206,23 +206,22 @@ export const Login = async (req, res) => {
       })
     }
 
-    const token = jwt.sign({ id: user._id, role: user.userRole }, process.env.JWT_SECRET, { expiresIn: '60m' });
+    const token = jwt.sign(
+      { id: user._id, role: user.userRole },
+      process.env.JWT_SECRET,
+      { expiresIn: '60m' }
+    );
 
-    // Set the cookie
+    // Set the cookie first
     res.cookie('session-uid', token, {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 60 * 60 * 1000, // 1h
-    });
-
-    // Redirect based on user role
-    if (user.userRole === 'admin') {
-      return res.send('/admin-dashboard');
-    } else if (user.userRole === 'manager') {
-      return res.send('/manager-dashboard');
-    } else {
-      return res.send('/employee-dashboard');
-    }
+      maxAge: 60 * 60 * 1000, // 1 hour
+    })
+    .json({
+      success: true,
+      role: `${user.userRole}`
+    })
   }
   catch (e) {
     console.log(`Server error: ${e}`);

@@ -41,13 +41,25 @@ const AdminSignup = () => {
         companyEmail,
         password: companyPassword
       }, { withCredentials: true })
-      
-      toast({
-        title: "Account created successfully!",
-        description: `Welcome to TaskPilot, ${contactPerson} please verify your account!`,
-      });
 
-      navigate('/admin-verification');
+      if(response.data.success){
+        toast({
+          title: "Account created successfully!",
+          description: `Welcome to TaskPilot, ${contactPerson} please verify your account!`,
+        });
+
+        navigate('/admin-verification');
+      }
+      else{
+        toast({
+          title: "Account creation failed",
+          description: `Please check your information and try again later`,
+        });
+
+        navigate('/login');
+      }
+      
+      
     } catch (error) {
       toast({
         title: "Error",

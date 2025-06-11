@@ -7,7 +7,7 @@ import { CreateTaskDialog } from '@/components/CreateTaskDialog';
 import axios from 'axios';
 
 const AdminDashboard = () => {
-  const user = {}
+  const [dashboardData, setDashboardData] = useState(null);
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
   const [isCreateTaskDialogOpen, setIsCreateTaskDialogOpen] = useState(false);
 
@@ -17,20 +17,20 @@ const AdminDashboard = () => {
         const response = await axios.get('http://localhost:4000/admin/dashboard', {
           withCredentials: true
         });
-        const data = response.data
-        console.log(user)
+        console.log(response.data)
+        setDashboardData(response.data);
       } catch (error) {
         console.error('Error fetching dashboard:', error);
       }
     };
 
     fetchDashboard();
-  }); // Empty array = run only once on component mount
+  }, []); // Empty array = run only once on component mount
 
   const stats = [
     {
       title: "Total Employees",
-      value: 24,
+      value: `${dashboardData?.total_users ?? 0}`,
       description: "Active team members",
       icon: Users,
       color: "text-blue-600",
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Active Tasks",
-      value: "156",
+      value: `${dashboardData?.total_tasks ?? 0}`,
       description: "Tasks in progress",
       icon: Calendar,
       color: "text-warning",
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
           <p className="text-muted-foreground mt-2">
-            Welcome back, User! Here's what's happening at your company.
+            Welcome back, {dashboardData?.user?.name} ! Here's what's happening at your company.
           </p>
         </div>
 

@@ -33,7 +33,7 @@ export const GetAdminDashboard = async (req, res) => {
       case 'admin':
         res.json({
           success: true,
-          "header": {
+          "user": {
             name: user.userFullname,
             email: user.userEmail,
             company: user.userCompany,

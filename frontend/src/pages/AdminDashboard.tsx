@@ -54,7 +54,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Productivity",
-      value: "87%",
+      value: `${dashboardData?.user?.productivity ?? 0}`,
       description: "Overall completion rate",
       icon: TrendingUp,
       color: "text-purple-600",
